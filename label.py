@@ -9,11 +9,10 @@ import fitz as fz
 import numpy as np
 from tkinter import messagebox
 from PIL import Image
-
+import subprocess
 
 # TODO: 
-# open new label file after its made
-#  clear labels button to clear list
+# auto scrollbar
 
 working = True
 
@@ -22,7 +21,7 @@ root.title('Label Converter')
 
 root.geometry("400x350")
 root.eval('tk::PlaceWindow . center')
-root.columnconfigure(0, weight=1)
+root.columnconfigure(0)
 
 def OpenFile():
     name = askopenfilename()
@@ -39,19 +38,18 @@ def file_chooser():
 
 frame = tk.Frame(root)
 #frame.pack()
-frame.grid(column=0, row=2, padx=5, pady =5)
+frame.grid(column=0, row=2, padx=10, pady =5, columnspan=2)
 
 menu = tk.Menu(root)
 root.config(menu=menu)
 filemenu=tk.Menu(menu)
-#menu.add_cascade(label="File", menu=filemenu)
+menu.add_cascade(label="File", menu=filemenu)
 #filemenu.add_command(label="Open...", command=OpenFile)
-#filemenu.add_command(label="Exit", command=root.quit)
-menu.add_command(label="Exit", command=root.quit)
+filemenu.add_command(label="Exit", command=root.quit)
+#menu.add_command(label="Exit", command=root.quit)
 
 lb = tk.Listbox(frame, width="40")
 lb.grid(column=0,row=0)
-
 
 scrollbarY = tk.Scrollbar(frame)
 scrollbarY.config(command=lb.yview)
@@ -212,22 +210,30 @@ def laced_label():
             os.remove(aliasqr_path)
             os.remove(output)
             
-
+    if file_list == []:
+        messagebox.showwarning(message="No labels selected")
     new_label_path = os.path.join(file_dir, 'newlabel.pdf')
     Output = open(f'{new_label_path}', 'wb')
     newlabel.write(Output)
     Output.close()
     messagebox.showinfo(title="Done", message="Labels ready to print!")
+    subprocess.run(['open', new_label_path], check=True)
     print("done")
 
+def clear_list():
+    file_list.clear()
+    lb.delete(0,'end')
 
 label1 = tk.Label(root, text='Add Laced and/or Alias labels here: ')
-label1.grid(column=0,row=0, padx=5, pady =5)
+label1.grid(column=0,row=0, padx=5, pady =5, columnspan=2)
 
 button2 = tk.Button(text="Choose Files", command=file_chooser)
 button2.grid(column=0,row=1, padx=5, pady=10)
 
 button1 = tk.Button(text="Submit Labels", command=laced_label)
-button1.grid(column=0,row=3, padx=5, pady =20)
+button1.grid(column=0,row=3, pady =20, columnspan=2)
+
+button3 = tk.Button(text="Clear", command=clear_list)
+button3.grid(column=1,row=1, pady =10)
 
 root.mainloop()
