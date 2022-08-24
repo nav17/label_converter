@@ -12,14 +12,14 @@ from PIL import Image
 import subprocess
 
 # TODO: 
-# auto scrollbar
+# auto hide scrollbar
 
 working = True
 
 root = tk.Tk()
 root.title('Label Converter')
 
-root.geometry("400x350")
+root.geometry("310x330")
 root.eval('tk::PlaceWindow . center')
 root.columnconfigure(0)
 
@@ -28,6 +28,13 @@ def OpenFile():
     print(name)
 
 file_list = []
+
+n_rows =5
+n_columns =2
+for i in range(n_rows):
+    root.grid_rowconfigure(i,  weight =1)
+for i in range(n_columns):
+    root.grid_columnconfigure(i,  weight =1)
 
 def file_chooser():
     files = fd.askopenfilenames(parent=root, title='Choose a File')
@@ -38,7 +45,7 @@ def file_chooser():
 
 frame = tk.Frame(root)
 #frame.pack()
-frame.grid(column=0, row=2, padx=10, pady =5, columnspan=2)
+frame.grid(column=0, row=2, padx=20, pady =15, columnspan=2)
 
 menu = tk.Menu(root)
 root.config(menu=menu)
@@ -48,13 +55,21 @@ menu.add_cascade(label="File", menu=filemenu)
 filemenu.add_command(label="Exit", command=root.quit)
 #menu.add_command(label="Exit", command=root.quit)
 
-lb = tk.Listbox(frame, width="40")
+lb = tk.Listbox(frame, width="27", height="10")
 lb.grid(column=0,row=0)
 
-scrollbarY = tk.Scrollbar(frame)
+class AutoScrollbar(tk.Scrollbar):
+    def set(self, low, high):
+        if float(low) <= 0.0 and float(high) >= 1.0:
+            self.tk.call("grid", "remove", self)
+        else:
+            self.grid()
+        tk.Scrollbar.set(self, low, high)
+
+scrollbarY = AutoScrollbar(frame)
 scrollbarY.config(command=lb.yview)
 scrollbarY.grid(column=1,row=0, sticky="ns")
-scrollbarX = tk.Scrollbar(frame, orient="horizontal")
+scrollbarX = AutoScrollbar(frame, orient="horizontal")
 scrollbarX.config(command=lb.xview)
 scrollbarX.grid(column=0,row=1, sticky="ew")
 lb.config(yscrollcommand=scrollbarY.set, xscrollcommand=scrollbarX.set)
@@ -228,12 +243,15 @@ label1 = tk.Label(root, text='Add Laced and/or Alias labels here: ')
 label1.grid(column=0,row=0, padx=5, pady =5, columnspan=2)
 
 button2 = tk.Button(text="Choose Files", command=file_chooser)
-button2.grid(column=0,row=1, padx=5, pady=10)
+button2.grid(column=0,row=1, padx=5, pady=0)
 
 button1 = tk.Button(text="Submit Labels", command=laced_label)
-button1.grid(column=0,row=3, pady =20, columnspan=2)
+button1.grid(column=0,row=3, pady =0, columnspan=2)
 
 button3 = tk.Button(text="Clear", command=clear_list)
-button3.grid(column=1,row=1, pady =10)
+button3.grid(column=1,row=1, pady =0)
+
+label2 = tk.Label(root)
+label2.grid(column=0, row=4, columnspan=2)
 
 root.mainloop()
