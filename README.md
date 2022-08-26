@@ -30,5 +30,8 @@ It is recommended moving the extracted folder to an applications to prevent dele
 Alternatively, use [pyinstaller](https://pyinstaller.org/) to generate the python app for your OS by running the following command 
 
 ```python
+# Mac:
 pyinstaller --onedir --windowed --icon="img/icon.png" "Label Converter.py"
+# Windows:
+pyinstaller --onedir --windowed --icon="img/icon.png" "labelwin.py"
 ```
