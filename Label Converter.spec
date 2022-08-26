@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['Label', 'Converter.py'],
+    ['Label Converter.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -26,7 +26,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='Label',
+    name='Label Converter',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -47,11 +47,11 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='Label',
+    name='Label Converter',
 )
 app = BUNDLE(
     coll,
-    name='Label.app',
+    name='Label Converter.app',
     icon='icon.png',
     bundle_identifier=None,
 )

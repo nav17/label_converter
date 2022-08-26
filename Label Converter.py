@@ -5,17 +5,13 @@ import os.path
 import tkinter as tk
 import os
 import tkinter.filedialog as fd
-import fitz as fz
+import fitz as fz #pymupdf
 import numpy as np
 from tkinter import messagebox
 from PIL import Image
 import subprocess
 
-# TODO: 
-# auto hide scrollbar
-
-working = True
-
+# gen gui
 root = tk.Tk()
 root.title('Label Converter')
 
@@ -23,11 +19,11 @@ root.geometry("310x330")
 root.eval('tk::PlaceWindow . center')
 root.columnconfigure(0)
 
-def OpenFile():
-    name = askopenfilename()
-    print(name)
-
-file_list = []
+menu = tk.Menu(root)
+root.config(menu=menu)
+filemenu=tk.Menu(menu)
+menu.add_cascade(label="File", menu=filemenu)
+filemenu.add_command(label="Exit", command=root.quit)
 
 n_rows =5
 n_columns =2
@@ -36,24 +32,8 @@ for i in range(n_rows):
 for i in range(n_columns):
     root.grid_columnconfigure(i,  weight =1)
 
-def file_chooser():
-    files = fd.askopenfilenames(parent=root, title='Choose a File')
-    for file in files:
-        print("chosen: " + file)
-        file_list.append(file)
-        lb.insert("end", file)
-
 frame = tk.Frame(root)
-#frame.pack()
 frame.grid(column=0, row=2, padx=20, pady =15, columnspan=2)
-
-menu = tk.Menu(root)
-root.config(menu=menu)
-filemenu=tk.Menu(menu)
-menu.add_cascade(label="File", menu=filemenu)
-#filemenu.add_command(label="Open...", command=OpenFile)
-filemenu.add_command(label="Exit", command=root.quit)
-#menu.add_command(label="Exit", command=root.quit)
 
 lb = tk.Listbox(frame, width="27", height="10")
 lb.grid(column=0,row=0)
@@ -74,13 +54,17 @@ scrollbarX.config(command=lb.xview)
 scrollbarX.grid(column=0,row=1, sticky="ew")
 lb.config(yscrollcommand=scrollbarY.set, xscrollcommand=scrollbarX.set)
 
-def laced_label():
+file_list = []
+
+def file_chooser():
+    files = fd.askopenfilenames(parent=root, title='Choose a File')
+    for file in files:
+        print("chosen: " + file)
+        file_list.append(file)
+        lb.insert("end", file)
+
+def make_label():
     print(file_list)
-    #files = lb.get(0, tk.END)
-    #print(files)
-    #for file in files:
-    #    file = "".join(str(files))
-    #    print("a file: " + file)
     newlabel = PdfFileWriter()
     for file in file_list:
         edit=PdfFileReader(open(f'{file}', 'rb'))
@@ -88,8 +72,8 @@ def laced_label():
         file_dir = os.path.dirname(file)
         file_name = os.path.basename(file)
         print(file_name)
-
         if file_name.endswith('- Shipping Label.pdf'):
+            # laced label
             page = edit.getPage(0)
             page.cropBox.upperLeft = (130, 695)
             page.cropBox.lowerRight = (470, 485)
@@ -108,9 +92,9 @@ def laced_label():
             lacedqr.write(Output)
             Output.close()
             
-            # alias qr code to image
+            # qr code to image
             doc = fz.open(lacedqr_path)
-            page = doc.load_page(0)  # number of page
+            page = doc.load_page(0)
             pix = page.get_pixmap(dpi=300)
             output = os.path.join(file_dir, "outfile.png")
             pix.save(output)
@@ -126,13 +110,13 @@ def laced_label():
 
             # back to pdf
             doc = fz.open()
-            img = fz.open(output)  # open pic as document
-            rect = img[0].rect  # pic dimension
-            pdfbytes = img.convert_to_pdf()  # make a PDF stream
-            img.close()  # no longer needed
-            imgPDF = fz.open("pdf", pdfbytes)  # open stream as PDF
-            page = doc.new_page(width = rect.width, height = rect.height)  # pic dimension
-            page.show_pdf_page(rect, imgPDF, 0)  # image fills the page
+            img = fz.open(output)
+            rect = img[0].rect
+            pdfbytes = img.convert_to_pdf()
+            img.close()
+            imgPDF = fz.open("pdf", pdfbytes)
+            page = doc.new_page(width = rect.width, height = rect.height)
+            page.show_pdf_page(rect, imgPDF, 0)
             doc.save(lacedqr_path)
             print("saved as new pdf")
 
@@ -157,6 +141,7 @@ def laced_label():
             page.trimBox.lowerRight = (550, 240)
             newlabel.addPage(page)
         else:
+            # alias label
             page = edit.getPage(0)
             page.cropBox.upperLeft = (60, 415)
             page.cropBox.lowerRight = (500, 180)
@@ -189,9 +174,9 @@ def laced_label():
             aliasqr.write(Output)
             Output.close()
             
-            # alias qr code to image
+            # qr code to image
             doc = fz.open(aliasqr_path)
-            page = doc.load_page(0)  # number of page
+            page = doc.load_page(0)
             pix = page.get_pixmap(dpi=300)
             output = os.path.join(file_dir, "outfile.png")
             pix.save(output)
@@ -207,13 +192,13 @@ def laced_label():
 
             # back to pdf
             doc = fz.open()
-            img = fz.open(output)  # open pic as document
-            rect = img[0].rect  # pic dimension
-            pdfbytes = img.convert_to_pdf()  # make a PDF stream
-            img.close()  # no longer needed
-            imgPDF = fz.open("pdf", pdfbytes)  # open stream as PDF
-            page = doc.new_page(width = rect.width, height = rect.height)  # pic dimension
-            page.show_pdf_page(rect, imgPDF, 0)  # image fills the page
+            img = fz.open(output)
+            rect = img[0].rect
+            pdfbytes = img.convert_to_pdf()
+            img.close()
+            imgPDF = fz.open("pdf", pdfbytes)
+            page = doc.new_page(width = rect.width, height = rect.height)
+            page.show_pdf_page(rect, imgPDF, 0)
             doc.save(aliasqr_path)
             print("saved as new pdf")
 
@@ -227,10 +212,12 @@ def laced_label():
             
     if file_list == []:
         messagebox.showwarning(message="No labels selected")
+    
     new_label_path = os.path.join(file_dir, 'newlabel.pdf')
     Output = open(f'{new_label_path}', 'wb')
     newlabel.write(Output)
     Output.close()
+
     messagebox.showinfo(title="Done", message="Labels ready to print!")
     subprocess.run(['open', new_label_path], check=True)
     print("done")
@@ -245,7 +232,7 @@ label1.grid(column=0,row=0, padx=5, pady =5, columnspan=2)
 button2 = tk.Button(text="Choose Files", command=file_chooser)
 button2.grid(column=0,row=1, padx=5, pady=0)
 
-button1 = tk.Button(text="Submit Labels", command=laced_label)
+button1 = tk.Button(text="Submit Labels", command=make_label)
 button1.grid(column=0,row=3, pady =0, columnspan=2)
 
 button3 = tk.Button(text="Clear", command=clear_list)

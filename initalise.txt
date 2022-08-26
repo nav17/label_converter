@@ -1,1 +1,1 @@
-pyinstaller --onedir --windowed --icon=icon5.png label.py
+pyinstaller --onedir --windowed --icon=icon.png label.py
