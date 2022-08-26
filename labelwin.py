@@ -1,6 +1,4 @@
-from email import message
 from PyPDF2 import PdfFileReader, PdfFileWriter
-from tkinter.filedialog import askopenfilename
 import os.path
 import tkinter as tk
 import os
@@ -240,7 +238,7 @@ label1.grid(column=0,row=0, padx=5, pady =5, columnspan=2)
 button2 = tk.Button(text="Choose Files", command=file_chooser)
 button2.grid(column=0,row=1, padx=5, pady=0)
 
-button1 = tk.Button(text="Submit Labels", command=laced_label)
+button1 = tk.Button(text="Submit Labels", command=make_label)
 button1.grid(column=0,row=3, pady =0, columnspan=2)
 
 button3 = tk.Button(text="Clear", command=clear_list)

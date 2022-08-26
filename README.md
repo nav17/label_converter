@@ -2,7 +2,7 @@
 
 A simple GUI tool which formats and collates UK shipping labels generated from [Laced](https://www.laced.co.uk/) and [Alias](https://www.alias.org/) to print on thermal printers.
 
-![Screenshot](https://github.com/nav17/label_converter/blob/master/ss.png?raw=true)
+![Screenshot](https://github.com/nav17/label_converter/blob/master/img/ss.png?raw=true)
 
 ## Usage
 Simply choose the PDF files of the labels you want to print & submit
@@ -13,7 +13,7 @@ The tool will:
 * Collate all labels into single PDF
 * Open new PDF with the default PDF viewer
 
-![Screenshot](https://github.com/nav17/label_converter/blob/master/ss2.png?raw=true)
+![Screenshot](https://github.com/nav17/label_converter/blob/master/img/ss2/.png?raw=true)
 
 ## Prequisites
 Requires Python 3.7 or above.
@@ -30,5 +30,5 @@ It is recommended moving the extracted folder to an applications to prevent dele
 Alternatively, use [pyinstaller](https://pyinstaller.org/) to generate the python app for your OS by running the following command 
 
 ```python
-pyinstaller --onedir --windowed --icon=icon.png "Label Converter.py"
+pyinstaller --onedir --windowed --icon="img/icon.png" "Label Converter.py"
 ```

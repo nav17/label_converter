@@ -1,6 +1,4 @@
-from email import message
 from PyPDF2 import PdfFileReader, PdfFileWriter
-from tkinter.filedialog import askopenfilename
 import os.path
 import tkinter as tk
 import os
