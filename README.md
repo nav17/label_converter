@@ -13,7 +13,7 @@ The tool will:
 * Collate all labels into single PDF
 * Open new PDF with the default PDF viewer
 
-![Screenshot](https://github.com/nav17/label_converter/blob/master/img/ss2/.png?raw=true)
+![Screenshot](https://github.com/nav17/label_converter/blob/master/img/ss2.png?raw=true)
 
 ## Prequisites
 Requires Python 3.7 or above.
