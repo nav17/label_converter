@@ -13,7 +13,7 @@ import subprocess
 root = tk.Tk()
 root.title('Label Converter')
 
-root.geometry("310x330")
+root.geometry("330x350")
 root.eval('tk::PlaceWindow . center')
 root.columnconfigure(0)
 
@@ -31,9 +31,9 @@ for i in range(n_columns):
     root.grid_columnconfigure(i,  weight =1)
 
 frame = tk.Frame(root)
-frame.grid(column=0, row=2, padx=20, pady =15, columnspan=2)
+frame.grid(column=0, row=3, padx=20, pady =15, columnspan=2)
 
-lb = tk.Listbox(frame, width="27", height="10")
+lb = tk.Listbox(frame, width="30", height="10")
 lb.grid(column=0,row=0)
 
 class AutoScrollbar(tk.Scrollbar):
@@ -60,10 +60,14 @@ def file_chooser():
         print("chosen: " + file)
         file_list.append(file)
         lb.insert("end", file)
+    if(file_list!=[]):
+        button3.grid(column=0,row=2, padx=20, pady =0, sticky="W")
 
 def make_label():
     print(file_list)
     newlabel = PdfFileWriter()
+    if file_list == []:
+        messagebox.showwarning(message="No labels selected")
     for file in file_list:
         edit=PdfFileReader(open(f'{file}', 'rb'))
         print(file)
@@ -207,15 +211,16 @@ def make_label():
             print("added to print")
             os.remove(aliasqr_path)
             os.remove(output)
-            
-    if file_list == []:
-        messagebox.showwarning(message="No labels selected")
     
     new_label_path = os.path.join(file_dir, 'newlabel.pdf')
     Output = open(f'{new_label_path}', 'wb')
     newlabel.write(Output)
     Output.close()
-
+    if(switch.get() == 1):
+        for file in file_list:
+            os.remove(file)
+        file_list.clear()
+        lb.delete(0,'end')
     messagebox.showinfo(title="Done", message="Labels ready to print!")
     subprocess.run(['open', new_label_path], check=True)
     print("done")
@@ -223,20 +228,39 @@ def make_label():
 def clear_list():
     file_list.clear()
     lb.delete(0,'end')
+    button3.grid_forget()
 
-label1 = tk.Label(root, text='Add Laced and/or Alias labels here: ')
-label1.grid(column=0,row=0, padx=5, pady =5, columnspan=2)
+def delete_labels():
+    for file in file_list:
+        os.remove(file)
+    file_list.clear()
+    lb.delete(0,'end')
+
+switch = tk.IntVar()
+
+label1 = tk.Label(root, text='Add Laced and/or Alias labels here:')
+label1.grid(column=0,row=0, padx=20, pady =5, columnspan=2, sticky="W")
 
 button2 = tk.Button(text="Choose Files", command=file_chooser)
-button2.grid(column=0,row=1, padx=5, pady=0)
+button2.grid(column=0,row=1, padx=20, pady=0, sticky="W")
 
 button1 = tk.Button(text="Submit Labels", command=make_label)
-button1.grid(column=0,row=3, pady =0, columnspan=2)
+button1.grid(column=0,row=4, pady =0, columnspan=2)
 
-button3 = tk.Button(text="Clear", command=clear_list)
-button3.grid(column=1,row=1, pady =0)
+button3 = tk.Button(text="Clear List", command=clear_list)
+button3.grid(column=1,row=2, padx=20, pady =0, sticky="E")
+
+#button4 = tk.Button(text="Delete Labels", command=delete_labels)
+#button4.grid(column=1,row=3, pady =0)
+
+checkbox1 = tk.Checkbutton(root, text="auto-delete labels", variable=switch, onvalue=1, offvalue=0)
+checkbox1.grid(column=1, row=1, padx=20, pady =0, sticky="E")
+
+if(file_list == []):
+    button3.grid_forget()
+    checkbox1.grid(column=1, row=1, padx=20, pady =0, sticky="E")
 
 label2 = tk.Label(root)
-label2.grid(column=0, row=4, columnspan=2)
+label2.grid(column=0, row=5, columnspan=2)
 
 root.mainloop()
