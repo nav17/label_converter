@@ -1,4 +1,4 @@
-# v0.1.2
+# v0.2
 from PyPDF2 import PdfFileReader, PdfFileWriter
 import os.path
 import tkinter as tk
