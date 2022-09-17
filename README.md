@@ -13,7 +13,11 @@ The tool will:
 * Collate all labels into single PDF
 * Open new PDF with the default PDF viewer
 
+Includes the option to auto-delete label files after submitting
+
 ![Screenshot](https://github.com/nav17/label_converter/blob/master/img/ss2.png?raw=true)
+
+Try it out with the sample labels above!
 
 ## Prequisites
 Requires Python 3.7 or above.
