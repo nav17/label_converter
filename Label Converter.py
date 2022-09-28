@@ -224,6 +224,7 @@ def make_label():
             os.remove(output)
     
         new_label_path = os.path.join(file_dir, 'newlabel.pdf')
+        new_label_path = os.path.normpath(new_label_path)
         Output = open(f'{new_label_path}', 'wb')
         newlabel.write(Output)
         qr_file.close()
