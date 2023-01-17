@@ -10,6 +10,7 @@ from tkinter import messagebox
 from PIL import Image
 import subprocess
 import platform
+import requests
 
 # gen gui
 root = tk.Tk()
@@ -88,15 +89,15 @@ def make_label():
         if file_name.endswith('- Shipping Label.pdf'):
             # laced label
             page = edit.getPage(0)
-            page.cropBox.upperLeft = (130, 695)
+            page.cropBox.upperLeft = (130, 705)
             page.cropBox.lowerRight = (470,470)
-            page.mediaBox.upperLeft = (130, 695)
+            page.mediaBox.upperLeft = (130, 705)
             page.mediaBox.lowerRight = (470,470)
-            page.bleedBox.upperLeft = (130, 695)
+            page.bleedBox.upperLeft = (130, 705)
             page.bleedBox.lowerRight = (470,470)
-            page.artBox.upperLeft = (130, 695)
+            page.artBox.upperLeft = (130, 705)
             page.artBox.lowerRight = (470,470)
-            page.trimBox.upperLeft = (130, 695)
+            page.trimBox.upperLeft = (130, 705)
             page.trimBox.lowerRight = (470,470)
             lacedqr = PdfFileWriter()
             lacedqr.addPage(page)
@@ -142,16 +143,16 @@ def make_label():
             os.remove(output)
 
             page = edit.getPage(1)
-            page.cropBox.upperLeft = (30, 550)
-            page.cropBox.lowerRight = (550, 240)
-            page.mediaBox.upperLeft = (30, 550)
-            page.mediaBox.lowerRight = (550, 240)
-            page.bleedBox.upperLeft = (30, 550)
-            page.bleedBox.lowerRight = (550, 240)
-            page.artBox.upperLeft = (30, 550)
-            page.artBox.lowerRight = (550, 240)
-            page.trimBox.upperLeft = (30, 550)
-            page.trimBox.lowerRight = (550, 240)
+            page.cropBox.upperLeft = (30, 560)
+            page.cropBox.lowerRight = (550, 250)
+            page.mediaBox.upperLeft = (30, 560)
+            page.mediaBox.lowerRight = (550, 250)
+            page.bleedBox.upperLeft = (30, 560)
+            page.bleedBox.lowerRight = (550, 250)
+            page.artBox.upperLeft = (30, 560)
+            page.artBox.lowerRight = (550, 250)
+            page.trimBox.upperLeft = (30, 560)
+            page.trimBox.lowerRight = (550, 250)
             newlabel.addPage(page)
         else:
             # alias label
