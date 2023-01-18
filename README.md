@@ -26,16 +26,13 @@ Requires Python 3.7 or above.
 
 Download the appropriate zip file for Windows or Mac.
 
-* For Windows, open labelwin.exe to run the application. 
+* For Windows, open Label Converter.exe to run the application. 
 * For Mac, move the folder & app to your Applications folder.
 
 It is recommended moving the extracted folder to an applications to prevent deleting necessary files by mistake.
 
-Alternatively, use [pyinstaller](https://pyinstaller.org/) to generate the python app for your OS by running the following command 
+Alternatively, use [pyinstaller](https://pyinstaller.org/) to generate the python app by running the following command 
 
 ```python
-# Mac:
 pyinstaller --onedir --windowed --icon="img/icon.png" "Label Converter.py"
-# Windows:
-pyinstaller --onedir --windowed --icon="img/icon.png" "labelwin.py"
 ```

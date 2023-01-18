@@ -10,7 +10,6 @@ from tkinter import messagebox
 from PIL import Image
 import subprocess
 import platform
-import requests
 
 # gen gui
 root = tk.Tk()
@@ -89,16 +88,16 @@ def make_label():
         if file_name.endswith('- Shipping Label.pdf'):
             # laced label
             page = edit.getPage(0)
-            page.cropBox.upperLeft = (130, 705)
-            page.cropBox.lowerRight = (470,470)
-            page.mediaBox.upperLeft = (130, 705)
-            page.mediaBox.lowerRight = (470,470)
-            page.bleedBox.upperLeft = (130, 705)
-            page.bleedBox.lowerRight = (470,470)
-            page.artBox.upperLeft = (130, 705)
-            page.artBox.lowerRight = (470,470)
-            page.trimBox.upperLeft = (130, 705)
-            page.trimBox.lowerRight = (470,470)
+            page.cropBox.upperLeft = (130, 710)
+            page.cropBox.lowerRight = (470,475)
+            page.mediaBox.upperLeft = (130, 710)
+            page.mediaBox.lowerRight = (470,475)
+            page.bleedBox.upperLeft = (130, 710)
+            page.bleedBox.lowerRight = (470,475)
+            page.artBox.upperLeft = (130, 710)
+            page.artBox.lowerRight = (470,475)
+            page.trimBox.upperLeft = (130, 710)
+            page.trimBox.lowerRight = (470,475)
             lacedqr = PdfFileWriter()
             lacedqr.addPage(page)
             lacedqr_path = os.path.join(file_dir, 'lacedqr.pdf')

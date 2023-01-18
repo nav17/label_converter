@@ -3,3 +3,4 @@ dist/
 archive/
 
 .txt
+.DS_Store
