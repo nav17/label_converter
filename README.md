@@ -36,3 +36,9 @@ Alternatively, use [pyinstaller](https://pyinstaller.org/) to generate the pytho
 ```python
 pyinstaller --onedir --windowed --icon="img/icon.png" "Label Converter.py"
 ```
+
+## Changelog
+v0.1.1 - 
+v0.2 - Added auto-delete option & unified scripts for both OS
+v0.2.1 - Adjusted margins to match changes to laced labels
+v0.3 - Added UPS for Alias labels
