@@ -1,6 +1,6 @@
 # Label Converter
 
-A simple GUI tool which formats and collates UK shipping labels generated from [Laced](https://www.laced.co.uk/) and [Alias](https://www.alias.org/) to print on thermal printers.
+A simple GUI tool which crops, darkens and collates UK shipping labels from [Laced](https://www.laced.co.uk/), [Alias](https://www.alias.org/) and [StockX](https://www.stockx.com/) to print on thermal printers.
 
 ![Screenshot](https://github.com/nav17/label_converter/blob/master/img/ss.png?raw=true)
 
@@ -14,6 +14,8 @@ The tool will:
 * Open new PDF with the default PDF viewer
 
 Includes the option to auto-delete label files after submitting
+
+For StockX labels which open as a web page you will need to print to PDF (right click -> Print -> change printer to PDF) to add them.
 
 ![Screenshot](https://github.com/nav17/label_converter/blob/master/img/ss2.png?raw=true)
 
@@ -38,7 +40,6 @@ pyinstaller --onedir --windowed --icon="img/icon.png" "Label Converter.py"
 ```
 
 ## Changelog
-v0.1.1 - 
 v0.2 - Added auto-delete option & unified scripts for both OS
 v0.2.1 - Adjusted margins to match changes to laced labels
-v0.3 - Added UPS for Alias labels
+v0.3 - Added support for StockX and UPS Alias labels 

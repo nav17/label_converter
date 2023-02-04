@@ -187,6 +187,7 @@ def make_label():
             page = edit.getPage(0)
             text = page.extract_text()
             if text.startswith("DPD"):
+                # dpd label
                 page.cropBox.upperLeft = (60, 415)
                 page.cropBox.lowerRight = (500, 180)
                 page.mediaBox.upperLeft = (60, 415)
@@ -212,6 +213,7 @@ def make_label():
                 page.trimBox.lowerRight = (425, 300)
                 page.rotate(90)
             else:
+                # ups label
                 newlabel.addPage(page)
 
                 page = edit.getPage(1)
