@@ -40,6 +40,9 @@ pyinstaller --onedir --windowed --icon="img/icon.png" "Label Converter.py"
 ```
 
 ## Changelog
+
 v0.2 - Added auto-delete option & unified scripts for both OS
+
 v0.2.1 - Adjusted margins to match changes to laced labels
+
 v0.3 - Added support for StockX and UPS Alias labels 
