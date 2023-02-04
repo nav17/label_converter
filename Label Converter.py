@@ -153,6 +153,35 @@ def make_label():
             page.trimBox.upperLeft = (30, 560)
             page.trimBox.lowerRight = (550, 250)
             newlabel.addPage(page)
+        elif file_name.startswith('StockX'):
+            # stockx label
+            page = edit.getPage(0)
+            page.cropBox.upperLeft = (25, 860)
+            page.cropBox.lowerRight = (570, 550)
+            page.mediaBox.upperLeft = (25, 860)
+            page.mediaBox.lowerRight = (570, 550)
+            page.bleedBox.upperLeft = (185, 720)
+            page.bleedBox.lowerRight = (425, 300)
+            page.artBox.upperLeft = (185, 720)
+            page.artBox.lowerRight = (425, 300)
+            page.trimBox.upperLeft = (185, 720)
+            page.trimBox.lowerRight = (425, 300)
+            newlabel.addPage(page)
+
+            page = edit.getPage(1)
+            page.cropBox.upperLeft = (20, 565)
+            page.cropBox.lowerRight = (500, 240)
+            page.mediaBox.upperLeft = (20, 565)
+            page.mediaBox.lowerRight = (500, 240)
+            page.bleedBox.upperLeft = (185, 720)
+            page.bleedBox.lowerRight = (425, 300)
+            page.artBox.upperLeft = (185, 720)
+            page.artBox.lowerRight = (425, 300)
+            page.trimBox.upperLeft = (185, 720)
+            page.trimBox.lowerRight = (425, 300)
+            newlabel.addPage(page)
+            
+            qr_file = open(file, 'rb')
         else:
             # alias label
             page = edit.getPage(0)
@@ -247,6 +276,8 @@ def make_label():
         qr_file.close()
         if file_name.endswith('- Shipping Label.pdf'):
             os.remove(lacedqr_path)
+        elif file_name.startswith('StockX'):
+            pass
         else:
             os.remove(aliasqr_path)
     Output.close()
