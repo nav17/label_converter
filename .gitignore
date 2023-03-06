@@ -6,3 +6,4 @@ archive/
 *.DS_Store
 *.python-version
 *.spec
+*.gitignore
