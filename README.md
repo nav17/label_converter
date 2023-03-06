@@ -15,7 +15,7 @@ The tool will:
 
 Includes the option to auto-delete label files after submitting
 
-For StockX labels which open as a web page you will need to print to PDF (right click -> Print -> change printer to PDF) to add them.
+For StockX labels which open as a web page you will need to print to PDF (right click -> Print -> change printer to PDF) and ensure the PDF file name begins with 'StockX'
 
 ![Screenshot](https://github.com/nav17/label_converter/blob/master/img/ss2.png?raw=true)
 
