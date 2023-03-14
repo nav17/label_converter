@@ -10,6 +10,7 @@ from tkinter import messagebox
 from PIL import Image
 import subprocess
 import platform
+import datetime
 
 # gen gui
 root = tk.Tk()
@@ -73,8 +74,75 @@ def file_chooser():
     if(file_list!=[]):
         button3.grid(column=0,row=2, padx=25, pady =0, sticky="W")
 
+class label:
+    def crop(page ,x1, y1, x2, y2):
+        page.cropBox.upperLeft = (x1, y1)
+        page.cropBox.lowerRight = (x2,y2)
+        page.mediaBox.upperLeft = (x1, y1)
+        page.mediaBox.lowerRight = (x2,y2)
+        page.bleedBox.upperLeft = (x1, y1)
+        page.bleedBox.lowerRight = (x2,y2)
+        page.artBox.upperLeft = (x1, y1)
+        page.artBox.lowerRight = (x2,y2)
+        page.trimBox.upperLeft = (x1, y1)
+        page.trimBox.lowerRight = (x2,y2)
+    
+    def load(self, page, file_dir):
+        qr = PdfFileWriter()
+        qr.addPage(page)
+        qr_path = os.path.join(file_dir, 'qr.pdf')
+        Output = open(f'{qr_path}', 'wb')
+        qr.write(Output)
+        Output.close()
+        return qr_path
+
+    def qr_to_image(self, qr_path, file_dir):
+        doc = fz.open(qr_path)
+        page = doc.load_page(0)
+        pix = page.get_pixmap(dpi=300)
+        output = os.path.join(file_dir, "outfile.png")
+        pix.save(output)
+        print("saved qr as image")
+        return output
+
+    def darken(self, output):
+        im = Image.open(output).convert('L')
+        imnp = np.array(im)/255
+        gamma=0.2
+        new = ((imnp**(1/gamma))*255).astype(np.uint8)
+        Image.fromarray(new).save(output)
+        print("gamma increased")
+        return output
+
+    def img_to_pdf(self, output, qr_path):
+        doc = fz.open()
+        img = fz.open(output)
+        rect = img[0].rect
+        pdfbytes = img.convert_to_pdf()
+        img.close()
+        imgPDF = fz.open("pdf", pdfbytes)
+        page = doc.new_page(width = rect.width, height = rect.height)
+        page.show_pdf_page(rect, imgPDF, 0)
+        doc.save(qr_path)
+        print("saved as new pdf")
+        return qr_path
+        
+    def load_qr(self, qr_path, output, newlabel):
+        qr_file = open(f'{qr_path}', 'rb')
+        qr_edit = PdfFileReader(qr_file)
+        page = qr_edit.getPage(0)
+        newlabel.addPage(page)
+        print("added to print")
+        os.remove(output)
+    
+    def process(self, page, file_dir, newlabel):
+        qr_path = self.load(page, file_dir)
+        output = self.qr_to_image(qr_path, file_dir)
+        output = self.darken(output)
+        qr_path = self.img_to_pdf(output, qr_path)
+        self.load_qr(qr_path, output, newlabel)
+    
 def make_label():
-    print(file_list)
     newlabel = PdfFileWriter()
     if file_list == []:
         messagebox.showwarning(message="No labels selected")
@@ -84,234 +152,63 @@ def make_label():
         print(file)
         file_dir = os.path.dirname(file)
         file_name = os.path.basename(file)
-        print(file_name)
         page = edit.getPage(0)
         text = page.extract_text()
+
+        # laced label
         if file_name.endswith('- Shipping Label.pdf') or text.startswith("INCLUDE"):
-            # laced label
             page = edit.getPage(0)
-            page.cropBox.upperLeft = (125, 710)
-            page.cropBox.lowerRight = (475,475)
-            page.mediaBox.upperLeft = (125, 710)
-            page.mediaBox.lowerRight = (475,475)
-            page.bleedBox.upperLeft = (125, 710)
-            page.bleedBox.lowerRight = (475,475)
-            page.artBox.upperLeft = (125, 710)
-            page.artBox.lowerRight = (475,475)
-            page.trimBox.upperLeft = (125, 710)
-            page.trimBox.lowerRight = (475,475)
-            lacedqr = PdfFileWriter()
-            lacedqr.addPage(page)
-            lacedqr_path = os.path.join(file_dir, 'lacedqr.pdf')
-            Output = open(f'{lacedqr_path}', 'wb')
-            lacedqr.write(Output)
-            Output.close()
-            
-            # qr code to image
-            doc = fz.open(lacedqr_path)
-            page = doc.load_page(0)
-            pix = page.get_pixmap(dpi=300)
-            output = os.path.join(file_dir, "outfile.png")
-            pix.save(output)
-            print("saved qr as image")
-
-            # gamma increase
-            im = Image.open(output).convert('L')
-            imnp = np.array(im)/255
-            gamma=0.2
-            new = ((imnp**(1/gamma))*255).astype(np.uint8)
-            Image.fromarray(new).save(output)
-            print("gamma increased")
-
-            # back to pdf
-            doc = fz.open()
-            img = fz.open(output)
-            rect = img[0].rect
-            pdfbytes = img.convert_to_pdf()
-            img.close()
-            imgPDF = fz.open("pdf", pdfbytes)
-            page = doc.new_page(width = rect.width, height = rect.height)
-            page.show_pdf_page(rect, imgPDF, 0)
-            doc.save(lacedqr_path)
-            print("saved as new pdf")
-
-            # add qr pdf to print
-            qr_file = open(f'{lacedqr_path}', 'rb')
-            qr_edit = PdfFileReader(qr_file)
-            page = qr_edit.getPage(0)
-            newlabel.addPage(page)
-            print("added to print")
-            os.remove(output)
+            label.crop(page, 100, 710, 500, 475)
+            label().process(page, file_dir, newlabel)
 
             page = edit.getPage(1)
-            page.cropBox.upperLeft = (30, 560)
-            page.cropBox.lowerRight = (550, 250)
-            page.mediaBox.upperLeft = (30, 560)
-            page.mediaBox.lowerRight = (550, 250)
-            page.bleedBox.upperLeft = (30, 560)
-            page.bleedBox.lowerRight = (550, 250)
-            page.artBox.upperLeft = (30, 560)
-            page.artBox.lowerRight = (550, 250)
-            page.trimBox.upperLeft = (30, 560)
-            page.trimBox.lowerRight = (550, 250)
+            label.crop(page, 30, 560, 550, 250)
             newlabel.addPage(page)
+        
+        # kick game label
         elif text.endswith("item."):
-            # kick game label
             page = edit.getPage(0)
-            page.cropBox.upperLeft = (110, 680)
-            page.cropBox.lowerRight = (485, 120)
-            page.mediaBox.upperLeft = (110, 680)
-            page.mediaBox.lowerRight = (485, 120)
-            page.bleedBox.upperLeft = (110, 680)
-            page.bleedBox.lowerRight = (485, 120)
-            page.artBox.upperLeft = (110, 680)
-            page.artBox.lowerRight = (485, 120)
-            page.trimBox.upperLeft = (110, 680)
-            page.trimBox.lowerRight = (485, 120)
+            label.crop(page, 110, 680, 485, 120)
             page.rotate(90)
             newlabel.addPage(page)
 
             page = edit.getPage(1)
-            page.cropBox.upperLeft = (60, 415)
-            page.cropBox.lowerRight = (500, 180)
-            page.mediaBox.upperLeft = (60, 415)
-            page.mediaBox.lowerRight = (500, 180)
-            page.bleedBox.upperLeft = (60, 415)
-            page.bleedBox.lowerRight = (500, 180)
-            page.artBox.upperLeft = (60, 415)
-            page.artBox.lowerRight = (500, 180)
-            page.trimBox.upperLeft = (60, 415)
-            page.trimBox.lowerRight = (500, 180)
+            label.crop(page, 60,415, 500, 180)
             newlabel.addPage(page)
-            
-            qr_file = open(file, 'rb')
+        
+        # stockx label
         elif file_name.startswith('StockX'):
-            # stockx label
             page = edit.getPage(0)
-            page.cropBox.upperLeft = (25, 860)
-            page.cropBox.lowerRight = (570, 550)
-            page.mediaBox.upperLeft = (25, 860)
-            page.mediaBox.lowerRight = (570, 550)
-            page.bleedBox.upperLeft = (185, 720)
-            page.bleedBox.lowerRight = (425, 300)
-            page.artBox.upperLeft = (185, 720)
-            page.artBox.lowerRight = (425, 300)
-            page.trimBox.upperLeft = (185, 720)
-            page.trimBox.lowerRight = (425, 300)
+            label.crop(page,25 ,860 , 570, 550)
             newlabel.addPage(page)
 
             page = edit.getPage(1)
-            page.cropBox.upperLeft = (20, 565)
-            page.cropBox.lowerRight = (500, 240)
-            page.mediaBox.upperLeft = (20, 565)
-            page.mediaBox.lowerRight = (500, 240)
-            page.bleedBox.upperLeft = (185, 720)
-            page.bleedBox.lowerRight = (425, 300)
-            page.artBox.upperLeft = (185, 720)
-            page.artBox.lowerRight = (425, 300)
-            page.trimBox.upperLeft = (185, 720)
-            page.trimBox.lowerRight = (425, 300)
+            label.crop(page, 20, 565, 500, 240)
             newlabel.addPage(page)
-            
-            qr_file = open(file, 'rb')
+        
+        # alias label
         else:
-            # alias label
+            # dpd label
             if text.startswith("DPD"):
-                # dpd label
-                page.cropBox.upperLeft = (60, 415)
-                page.cropBox.lowerRight = (500, 180)
-                page.mediaBox.upperLeft = (60, 415)
-                page.mediaBox.lowerRight = (500, 180)
-                page.bleedBox.upperLeft = (60, 415)
-                page.bleedBox.lowerRight = (500, 180)
-                page.artBox.upperLeft = (60, 415)
-                page.artBox.lowerRight = (500, 180)
-                page.trimBox.upperLeft = (60, 415)
-                page.trimBox.lowerRight = (500, 180)
+                label.crop(page, 60, 415, 500, 180)
                 newlabel.addPage(page)
-
-                page = edit.getPage(1)
-                page.cropBox.upperLeft = (185, 720)
-                page.cropBox.lowerRight = (425, 300)
-                page.mediaBox.upperLeft = (185, 720)
-                page.mediaBox.lowerRight = (425, 300)
-                page.bleedBox.upperLeft = (185, 720)
-                page.bleedBox.lowerRight = (425, 300)
-                page.artBox.upperLeft = (185, 720)
-                page.artBox.lowerRight = (425, 300)
-                page.trimBox.upperLeft = (185, 720)
-                page.trimBox.lowerRight = (425, 300)
-                page.rotate(90)
+            #ups label
             else:
-                # ups label
-                newlabel.addPage(page)
-
-                page = edit.getPage(1)
-                page.cropBox.upperLeft = (185, 720)
-                page.cropBox.lowerRight = (425, 300)
-                page.mediaBox.upperLeft = (185, 720)
-                page.mediaBox.lowerRight = (425, 300)
-                page.bleedBox.upperLeft = (185, 720)
-                page.bleedBox.lowerRight = (425, 300)
-                page.artBox.upperLeft = (185, 720)
-                page.artBox.lowerRight = (425, 300)
-                page.trimBox.upperLeft = (185, 720)
-                page.trimBox.lowerRight = (425, 300)
                 page.rotate(90)
-            aliasqr = PdfFileWriter()
-            aliasqr.addPage(page)
-            aliasqr_path = os.path.join(file_dir, 'aliasqr.pdf')
-            Output = open(f'{aliasqr_path}', 'wb')
-            aliasqr.write(Output)
-            Output.close()
+                newlabel.addPage(page)
             
-            # qr code to image
-            doc = fz.open(aliasqr_path)
-            page = doc.load_page(0)
-            pix = page.get_pixmap(dpi=300)
-            output = os.path.join(file_dir, "outfile.png")
-            pix.save(output)
-            print("saved qr as image")
-
-            # gamma increase
-            im = Image.open(output).convert('L')
-            imnp = np.array(im)/255
-            gamma=0.2
-            new = ((imnp**(1/gamma))*255).astype(np.uint8)
-            Image.fromarray(new).save(output)
-            print("gamma increased")
-
-            # back to pdf
-            doc = fz.open()
-            img = fz.open(output)
-            rect = img[0].rect
-            pdfbytes = img.convert_to_pdf()
-            img.close()
-            imgPDF = fz.open("pdf", pdfbytes)
-            page = doc.new_page(width = rect.width, height = rect.height)
-            page.show_pdf_page(rect, imgPDF, 0)
-            doc.save(aliasqr_path)
-            print("saved as new pdf")
-
-            # add qr pdf to print
-            qr_file = open(f'{aliasqr_path}', 'rb')
-            qr_edit=PdfFileReader(qr_file)
-            page = qr_edit.getPage(0)
-            newlabel.addPage(page)
-            print("added to print")
-            os.remove(output)
+            page = edit.getPage(1)
+            label.crop(page, 185, 720, 425, 300)
+            page.rotate(90)
+            label().process(page, file_dir, newlabel)
     
-        new_label_path = os.path.join(file_dir, 'newlabel.pdf')
+        new_label_path = os.path.join(file_dir, 'Label Print '+ datetime.datetime.now().strftime('%Y-%m-%d')+'.pdf')
         new_label_path = os.path.normpath(new_label_path)
         Output = open(f'{new_label_path}', 'wb')
         newlabel.write(Output)
-        qr_file.close()
+        qr_path = os.path.join(file_dir, 'qr.pdf')
         try:
-            os.remove(lacedqr_path)
-        except:
-            pass
-        try:
-            os.remove(aliasqr_path)
+            os.remove(qr_path)
         except:
             pass
         
