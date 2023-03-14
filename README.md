@@ -38,16 +38,9 @@ Alternatively, use [pyinstaller](https://pyinstaller.org/) to generate the pytho
 pyinstaller --onedir --windowed --icon="img/icon.png" "Label Converter.py"
 ```
 
-## Troubleshooting
-
-If you are experiencing issues with Laced labels not printing correctly, check the file name ends in " - Shipping Label.pdf". 
-If this is not the case, please raise an issue on github and let me know what the file name is downloaded as so I can add accomodate for this. Otherwise try downloading through Chrome and not emails.
-
-
-
 ## Changelog
 
-v0.4 = Added support for Kick Game labels
+v0.4 = Added support for Kick Game labels & Bug fixes
 v0.3 - Added support for StockX and UPS Alias labels 
 v0.2.1 - Adjusted margins to match changes to laced labels
 v0.2 - Added auto-delete option & unified scripts for both OS

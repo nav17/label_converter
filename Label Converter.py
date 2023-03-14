@@ -12,7 +12,6 @@ import subprocess
 import platform
 import datetime
 
-# gen gui
 root = tk.Tk()
 root.title('Label Converter')
 
