@@ -85,19 +85,21 @@ def make_label():
         file_dir = os.path.dirname(file)
         file_name = os.path.basename(file)
         print(file_name)
-        if file_name.endswith('- Shipping Label.pdf'):
+        page = edit.getPage(0)
+        text = page.extract_text()
+        if file_name.endswith('- Shipping Label.pdf') or text.startswith("INCLUDE"):
             # laced label
             page = edit.getPage(0)
-            page.cropBox.upperLeft = (130, 710)
-            page.cropBox.lowerRight = (470,475)
-            page.mediaBox.upperLeft = (130, 710)
-            page.mediaBox.lowerRight = (470,475)
-            page.bleedBox.upperLeft = (130, 710)
-            page.bleedBox.lowerRight = (470,475)
-            page.artBox.upperLeft = (130, 710)
-            page.artBox.lowerRight = (470,475)
-            page.trimBox.upperLeft = (130, 710)
-            page.trimBox.lowerRight = (470,475)
+            page.cropBox.upperLeft = (125, 710)
+            page.cropBox.lowerRight = (475,475)
+            page.mediaBox.upperLeft = (125, 710)
+            page.mediaBox.lowerRight = (475,475)
+            page.bleedBox.upperLeft = (125, 710)
+            page.bleedBox.lowerRight = (475,475)
+            page.artBox.upperLeft = (125, 710)
+            page.artBox.lowerRight = (475,475)
+            page.trimBox.upperLeft = (125, 710)
+            page.trimBox.lowerRight = (475,475)
             lacedqr = PdfFileWriter()
             lacedqr.addPage(page)
             lacedqr_path = os.path.join(file_dir, 'lacedqr.pdf')
@@ -153,6 +155,36 @@ def make_label():
             page.trimBox.upperLeft = (30, 560)
             page.trimBox.lowerRight = (550, 250)
             newlabel.addPage(page)
+        elif text.endswith("item."):
+            # kick game label
+            page = edit.getPage(0)
+            page.cropBox.upperLeft = (110, 680)
+            page.cropBox.lowerRight = (485, 120)
+            page.mediaBox.upperLeft = (110, 680)
+            page.mediaBox.lowerRight = (485, 120)
+            page.bleedBox.upperLeft = (110, 680)
+            page.bleedBox.lowerRight = (485, 120)
+            page.artBox.upperLeft = (110, 680)
+            page.artBox.lowerRight = (485, 120)
+            page.trimBox.upperLeft = (110, 680)
+            page.trimBox.lowerRight = (485, 120)
+            page.rotate(90)
+            newlabel.addPage(page)
+
+            page = edit.getPage(1)
+            page.cropBox.upperLeft = (60, 415)
+            page.cropBox.lowerRight = (500, 180)
+            page.mediaBox.upperLeft = (60, 415)
+            page.mediaBox.lowerRight = (500, 180)
+            page.bleedBox.upperLeft = (60, 415)
+            page.bleedBox.lowerRight = (500, 180)
+            page.artBox.upperLeft = (60, 415)
+            page.artBox.lowerRight = (500, 180)
+            page.trimBox.upperLeft = (60, 415)
+            page.trimBox.lowerRight = (500, 180)
+            newlabel.addPage(page)
+            
+            qr_file = open(file, 'rb')
         elif file_name.startswith('StockX'):
             # stockx label
             page = edit.getPage(0)
@@ -184,8 +216,6 @@ def make_label():
             qr_file = open(file, 'rb')
         else:
             # alias label
-            page = edit.getPage(0)
-            text = page.extract_text()
             if text.startswith("DPD"):
                 # dpd label
                 page.cropBox.upperLeft = (60, 415)
@@ -276,12 +306,15 @@ def make_label():
         Output = open(f'{new_label_path}', 'wb')
         newlabel.write(Output)
         qr_file.close()
-        if file_name.endswith('- Shipping Label.pdf'):
+        try:
             os.remove(lacedqr_path)
-        elif file_name.startswith('StockX'):
+        except:
             pass
-        else:
+        try:
             os.remove(aliasqr_path)
+        except:
+            pass
+        
     Output.close()
     if(switch.get() == 1):
         for file in file_list:
@@ -302,7 +335,7 @@ def clear_list():
 
 switch = tk.IntVar()
 
-label1 = tk.Label(root, text='Add Laced and/or Alias labels here:')
+label1 = tk.Label(root, text='Add labels here:')
 label1.grid(column=0,row=0, padx=25, pady =5, columnspan=2, sticky="W")
 
 button2 = tk.Button(text="Choose Files", command=file_chooser)

@@ -1,19 +1,18 @@
 # Label Converter
 
-A simple GUI tool which crops, darkens and collates UK shipping labels from [Laced](https://www.laced.co.uk/), [Alias](https://www.alias.org/) and [StockX](https://www.stockx.com/) to print on thermal printers.
+A simple Python-based GUI tool which is designed to format and collate UK shipping labels from [Laced](https://www.laced.co.uk/), [Alias](https://www.alias.org/) and [StockX](https://www.stockx.com/) to a standard 4x6" label size for printing on thermal label printers.
 
 ![Screenshot](https://github.com/nav17/label_converter/blob/master/img/ss.png?raw=true)
 
 ## Usage
-Simply choose the PDF files of the labels you want to print & submit
+To use the Label Converter tool, simply choose the PDF files of the labels you want to print and press "Submit". The tool will automatically perform the following functions:
 
-The tool will:
 * Crop the shipping label and QR code to a standard 4x6" label size
-* Darken the grey text which thermal printers struggle to display
-* Collate all labels into single PDF
+* Darken any grey text
+* Collate all labels into a single PDF
 * Open new PDF with the default PDF viewer
 
-Includes the option to auto-delete label files after submitting
+The tool also includes an option to automatically delete the label files after submission.
 
 For StockX labels which open as a web page you will need to print to PDF (right click -> Print -> change printer to PDF) and ensure the PDF file name begins with 'StockX'
 
@@ -39,10 +38,16 @@ Alternatively, use [pyinstaller](https://pyinstaller.org/) to generate the pytho
 pyinstaller --onedir --windowed --icon="img/icon.png" "Label Converter.py"
 ```
 
+## Troubleshooting
+
+If you are experiencing issues with Laced labels not printing correctly, check the file name ends in " - Shipping Label.pdf". 
+If this is not the case, please raise an issue on github and let me know what the file name is downloaded as so I can add accomodate for this. Otherwise try downloading through Chrome and not emails.
+
+
+
 ## Changelog
 
-v0.2 - Added auto-delete option & unified scripts for both OS
-
-v0.2.1 - Adjusted margins to match changes to laced labels
-
+v0.4 = Added support for Kick Game labels
 v0.3 - Added support for StockX and UPS Alias labels 
+v0.2.1 - Adjusted margins to match changes to laced labels
+v0.2 - Added auto-delete option & unified scripts for both OS
