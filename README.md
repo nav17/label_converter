@@ -1,8 +1,8 @@
 # Label Converter
 
-A simple Python-based GUI tool which is designed to format and collate UK shipping labels from [Laced](https://www.laced.co.uk/), [Alias](https://www.alias.org/) and [StockX](https://www.stockx.com/) to a standard 4x6" label size for printing on thermal label printers.
+A simple Python-based GUI tool which is designed to format and collate UK shipping labels from [Laced](https://www.laced.co.uk/), [Alias](https://www.alias.org/), [StockX](https://www.stockx.com/) and [Kick Game](https://www.kickgame.co.uk/) to a standard 4x6" label size for printing on thermal label printers.
 
-![Screenshot](https://github.com/nav17/label_converter/blob/master/img/ss.png?raw=true)
+![Screenshot](https://github.com/nav17/label_converter/blob/master/img/tool.png?raw=true)
 
 ## Usage
 To use the Label Converter tool, simply choose the PDF files of the labels you want to print and press "Submit". The tool will automatically perform the following functions:
@@ -16,7 +16,7 @@ The tool also includes an option to automatically delete the label files after s
 
 For StockX labels which open as a web page you will need to print to PDF (right click -> Print -> change printer to PDF) and ensure the PDF file name begins with 'StockX'
 
-![Screenshot](https://github.com/nav17/label_converter/blob/master/img/ss2.png?raw=true)
+![Screenshot](https://github.com/nav17/label_converter/blob/master/img/example.png?raw=true)
 
 Try it out with the sample labels above!
 
