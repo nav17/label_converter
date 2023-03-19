@@ -5,7 +5,8 @@ A simple Python-based GUI tool which is designed to format and collate UK shippi
 ![Screenshot](https://github.com/nav17/label_converter/blob/master/img/tool.png?raw=true)
 
 ## Usage
-To use the Label Converter tool, simply choose the PDF files of the labels you want to print and press "Submit". The tool will automatically perform the following functions:
+To use the Label Converter tool, simply choose the PDF files of the labels you want to print and press "Submit".\
+The tool will automatically perform the following functions:
 
 * Crop the shipping label and QR code to a standard 4x6" label size
 * Darken any grey text
@@ -40,7 +41,7 @@ pyinstaller --onedir --windowed --icon="img/icon.png" "Label Converter.py"
 
 ## Changelog
 
-v0.4 = Added support for Kick Game labels & Bug fixes
-v0.3 - Added support for StockX and UPS Alias labels 
-v0.2.1 - Adjusted margins to match changes to laced labels
+v0.4 - Added support for Kick Game labels, Intel macs & Bug fixes\
+v0.3 - Added support for StockX and UPS Alias labels\
+v0.2.1 - Adjusted margins to match changes to laced labels\
 v0.2 - Added auto-delete option & unified scripts for both OS
