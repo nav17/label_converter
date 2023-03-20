@@ -22,7 +22,7 @@ For StockX labels which open as a web page you will need to print to PDF (right 
 Try it out with the sample labels above!
 
 ## Prequisites
-Requires Python 3.7 or above.
+Requires Python 3.11 or above.
 
 ## Installation
 

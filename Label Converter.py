@@ -1,5 +1,5 @@
-# v0.2
-from PyPDF2 import PdfFileReader, PdfFileWriter
+# v0.4
+from PyPDF2 import PdfReader, PdfWriter
 import os.path
 import tkinter as tk
 import os
@@ -75,20 +75,20 @@ def file_chooser():
 
 class label:
     def crop(page ,x1, y1, x2, y2):
-        page.cropBox.upperLeft = (x1, y1)
-        page.cropBox.lowerRight = (x2,y2)
-        page.mediaBox.upperLeft = (x1, y1)
-        page.mediaBox.lowerRight = (x2,y2)
-        page.bleedBox.upperLeft = (x1, y1)
-        page.bleedBox.lowerRight = (x2,y2)
-        page.artBox.upperLeft = (x1, y1)
-        page.artBox.lowerRight = (x2,y2)
-        page.trimBox.upperLeft = (x1, y1)
-        page.trimBox.lowerRight = (x2,y2)
+        page.cropbox.upper_left = (x1, y1)
+        page.cropbox.lower_right = (x2,y2)
+        page.mediabox.upper_left = (x1, y1)
+        page.mediabox.lower_right = (x2,y2)
+        page.bleedbox.upper_left = (x1, y1)
+        page.bleedbox.lower_right = (x2,y2)
+        page.artbox.upper_left = (x1, y1)
+        page.artbox.lower_right = (x2,y2)
+        page.trimbox.upper_left = (x1, y1)
+        page.trimbox.lower_right = (x2,y2)
     
     def load(self, page, file_dir):
-        qr = PdfFileWriter()
-        qr.addPage(page)
+        qr = PdfWriter()
+        qr.add_page(page)
         qr_path = os.path.join(file_dir, 'qr.pdf')
         Output = open(f'{qr_path}', 'wb')
         qr.write(Output)
@@ -128,9 +128,9 @@ class label:
         
     def load_qr(self, qr_path, output, newlabel):
         qr_file = open(f'{qr_path}', 'rb')
-        qr_edit = PdfFileReader(qr_file)
-        page = qr_edit.getPage(0)
-        newlabel.addPage(page)
+        qr_edit = PdfReader(qr_file)
+        page = qr_edit.pages[0]
+        newlabel.add_page(page)
         print("added to print")
         os.remove(output)
     
@@ -142,61 +142,61 @@ class label:
         self.load_qr(qr_path, output, newlabel)
     
 def make_label():
-    newlabel = PdfFileWriter()
+    newlabel = PdfWriter()
     if file_list == []:
         messagebox.showwarning(message="No labels selected")
     for file in file_list:
         infile = open(f'{file}', 'rb')
-        edit=PdfFileReader(infile)
+        edit=PdfReader(infile)
         print(file)
         file_dir = os.path.dirname(file)
         file_name = os.path.basename(file)
-        page = edit.getPage(0)
+        page = edit.pages[0]
         text = page.extract_text()
 
         # laced label
         if file_name.endswith('- Shipping Label.pdf') or text.startswith("INCLUDE"):
-            page = edit.getPage(0)
+            page = edit.pages[0]
             label.crop(page, 100, 710, 500, 475)
             label().process(page, file_dir, newlabel)
 
-            page = edit.getPage(1)
+            page = edit.pages[1]
             label.crop(page, 30, 560, 550, 250)
-            newlabel.addPage(page)
+            newlabel.add_page(page)
         
         # kick game label
         elif text.endswith("item."):
-            page = edit.getPage(0)
+            page = edit.pages[0]
             label.crop(page, 110, 680, 485, 120)
             page.rotate(90)
-            newlabel.addPage(page)
+            newlabel.add_page(page)
 
-            page = edit.getPage(1)
+            page = edit.pages[1]
             label.crop(page, 60,415, 500, 180)
-            newlabel.addPage(page)
+            newlabel.add_page(page)
         
         # stockx label
         elif file_name.startswith('StockX'):
-            page = edit.getPage(0)
+            page = edit.pages[0]
             label.crop(page,25 ,860 , 570, 550)
-            newlabel.addPage(page)
+            newlabel.add_page(page)
 
-            page = edit.getPage(1)
+            page = edit.pages[1]
             label.crop(page, 20, 565, 500, 240)
-            newlabel.addPage(page)
+            newlabel.add_page(page)
         
         # alias label
         else:
             # dpd label
             if text.startswith("DPD"):
                 label.crop(page, 60, 415, 500, 180)
-                newlabel.addPage(page)
+                newlabel.add_page(page)
             #ups label
             else:
                 page.rotate(90)
-                newlabel.addPage(page)
+                newlabel.add_page(page)
             
-            page = edit.getPage(1)
+            page = edit.pages[1]
             label.crop(page, 185, 720, 425, 300)
             page.rotate(90)
             label().process(page, file_dir, newlabel)
