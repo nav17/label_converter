@@ -178,11 +178,11 @@ def make_label():
         # stockx label
         elif file_name.startswith('StockX'):
             page = edit.pages[0]
-            label.crop(page,25 ,860 , 570, 550)
+            label.crop(page,20 ,860 , 575, 520)
             newlabel.add_page(page)
 
             page = edit.pages[1]
-            label.crop(page, 20, 565, 500, 240)
+            label.crop(page, 20, 560, 575, 180)
             newlabel.add_page(page)
         
         # alias label
@@ -201,7 +201,7 @@ def make_label():
             page.rotate(90)
             label().process(page, file_dir, newlabel)
     
-        new_label_path = os.path.join(file_dir, 'Label Print '+ datetime.datetime.now().strftime('%Y-%m-%d')+'.pdf')
+        new_label_path = os.path.join(file_dir, 'Label Print '+ datetime.datetime.now().strftime('%Y-%m-%d %H %M')+'.pdf')
         new_label_path = os.path.normpath(new_label_path)
         Output = open(f'{new_label_path}', 'wb')
         newlabel.write(Output)
