@@ -41,7 +41,7 @@ pyinstaller --onedir --windowed --icon="img/icon.png" "Label Converter.py"
 
 ## Changelog
 
-v0.4 - Added support for Kick Game labels, Intel macs & Bug fixes\
+v0.4 - Added support for Kick Game labels & Bug fixes\
 v0.3 - Added support for StockX and UPS Alias labels\
 v0.2.1 - Adjusted margins to match changes to laced labels\
 v0.2 - Added auto-delete option & unified scripts for both OS
