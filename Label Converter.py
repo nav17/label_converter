@@ -72,6 +72,7 @@ def file_chooser():
         lb.insert("end", f)
     if(file_list!=[]):
         button3.grid(column=0,row=2, padx=25, pady =0, sticky="W")
+        button4.grid(column=1,row=2, padx=25, pady =0, sticky="E")
 
 class label:
     def crop(page ,x1, y1, x2, y2):
@@ -140,7 +141,13 @@ class label:
         output = self.darken(output)
         qr_path = self.img_to_pdf(output, qr_path)
         self.load_qr(qr_path, output, newlabel)
-    
+
+def delete_labels():
+    for file in file_list:
+        os.remove(file)
+        file_list.clear()
+        lb.delete(0,'end')
+
 def make_label():
     newlabel = PdfWriter()
     if file_list == []:
@@ -213,10 +220,7 @@ def make_label():
         
     Output.close()
     if(switch.get() == 1):
-        for file in file_list:
-            os.remove(file)
-        file_list.clear()
-        lb.delete(0,'end')
+        delete_labels()
     messagebox.showinfo(title="Done", message="Labels ready to print!")
     if(platform.system() == "Darwin"):
         subprocess.run(['open', new_label_path], check=True)
@@ -228,6 +232,15 @@ def clear_list():
     file_list.clear()
     lb.delete(0,'end')
     button3.grid_forget()
+    button4.grid_forget()
+
+def delete_list():
+    msg = messagebox.askquestion('Delete Labels', 'Are you sure you want to delete the listed labels?', icon='warning')
+    if msg == 'yes':
+        delete_labels()
+        button3.grid_forget()
+        button4.grid_forget()
+        messagebox.showinfo(title="Labels Deleted", message="Listed labels have been deleted")
 
 switch = tk.IntVar()
 
@@ -241,13 +254,17 @@ button1 = tk.Button(text="Submit Labels", command=make_label)
 button1.grid(column=0,row=4, pady =0, columnspan=2)
 
 button3 = tk.Button(text="Clear List", command=clear_list)
-button3.grid(column=1,row=2, padx=25, pady =0, sticky="E")
+button3.grid(column=0,row=2, padx=25, pady =0, sticky="W")
+
+button4 = tk.Button(text="Delete List", command=delete_list)
+button4.grid(column=1,row=2, padx=25, pady =0, sticky="E")
 
 checkbox1 = tk.Checkbutton(root, text="auto-delete labels", variable=switch, onvalue=1, offvalue=0)
 checkbox1.grid(column=1, row=1, padx=25, pady =0, sticky="E")
 
 if(file_list == []):
     button3.grid_forget()
+    button4.grid_forget()
     checkbox1.grid(column=1, row=1, padx=25, pady =0, sticky="E")
 
 label2 = tk.Label(root)
