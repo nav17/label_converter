@@ -235,12 +235,12 @@ def clear_list():
     button4.grid_forget()
 
 def delete_list():
-    msg = messagebox.askquestion('Delete Labels', 'Are you sure you want to delete the listed labels?', icon='warning')
+    msg = messagebox.askquestion('Delete Labels', 'Are you sure you want to delete these labels?', icon='warning')
     if msg == 'yes':
         delete_labels()
         button3.grid_forget()
         button4.grid_forget()
-        messagebox.showinfo(title="Labels Deleted", message="Listed labels have been deleted")
+        messagebox.showinfo(title="Labels Deleted", message="Selected labels have been deleted")
 
 switch = tk.IntVar()
 
