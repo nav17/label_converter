@@ -204,7 +204,7 @@ def make_label():
                 newlabel.add_page(page)
             
             page = edit.pages[1]
-            label.crop(page, 185, 720, 425, 300)
+            label.crop(page, 185, 720, 425, 280)
             page.rotate(90)
             label().process(page, file_dir, newlabel)
     
