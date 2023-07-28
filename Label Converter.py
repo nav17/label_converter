@@ -144,9 +144,10 @@ class label:
 
 def delete_labels():
     for file in file_list:
+        print(file)
         os.remove(file)
-        file_list.clear()
-        lb.delete(0,'end')
+    file_list.clear()
+    lb.delete(0,'end')
 
 def make_label():
     newlabel = PdfWriter()
@@ -168,7 +169,7 @@ def make_label():
             label().process(page, file_dir, newlabel)
 
             page = edit.pages[1]
-            label.crop(page, 30, 560, 550, 250)
+            label.crop(page, 30, 550, 550, 235)
             newlabel.add_page(page)
         
         # kick game label
