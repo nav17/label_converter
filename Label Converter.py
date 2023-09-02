@@ -169,7 +169,10 @@ def make_label():
             label().process(page, file_dir, newlabel)
 
             page = edit.pages[1]
-            label.crop(page, 30, 550, 550, 235)
+            if "DPD" in text:
+                label.crop(page, 180, 550, 427, 310)
+            else:
+                label.crop(page, 30, 550, 550, 235)
             newlabel.add_page(page)
         
         # kick game label
