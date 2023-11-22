@@ -196,6 +196,12 @@ def make_label():
             label.crop(page, 20, 560, 575, 180)
             newlabel.add_page(page)
         
+        # ebay label
+        elif text[11:].startswith('Track'):
+            page = edit.pages[0]
+            label.crop(page,30 ,585 , 540, 830)
+            newlabel.add_page(page)
+        
         # alias label
         else:
             # dpd label
@@ -211,6 +217,7 @@ def make_label():
             label.crop(page, 185, 720, 425, 280)
             page.rotate(90)
             label().process(page, file_dir, newlabel)
+
     
         new_label_path = os.path.join(file_dir, 'Label Print '+ datetime.datetime.now().strftime('%Y-%m-%d %H %M')+'.pdf')
         new_label_path = os.path.normpath(new_label_path)

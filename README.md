@@ -1,6 +1,6 @@
 # Label Converter
 
-A simple Python-based GUI tool which is designed to format and collate UK shipping labels from [Laced](https://www.laced.co.uk/), [Alias](https://www.alias.org/), [StockX](https://www.stockx.com/) and [Kick Game](https://www.kickgame.co.uk/) to a standard 4x6" label size for printing on thermal label printers.
+A simple Python-based GUI tool which is designed to format and collate UK shipping labels from [Laced](https://www.laced.co.uk/), [Alias](https://www.alias.org/), [StockX](https://www.stockx.com/), [eBay](https://www.ebay.co.uk) and [Kick Game](https://www.kickgame.co.uk/) to a standard 4x6" label size for printing on thermal label printers.
 
 ![Screenshot](https://github.com/nav17/label_converter/blob/master/img/tool.png?raw=true)
 
@@ -41,6 +41,7 @@ pyinstaller --onedir --windowed --icon="img/icon.png" "Label Converter.py"
 
 ## Changelog
 
+v0.5 - Added support for eBay Authenticity Guarantee DPD labels\
 v0.4 - Added support for Kick Game labels & Bug fixes\
 v0.3 - Added support for StockX and UPS Alias labels\
 v0.2.1 - Adjusted margins to match changes to laced labels\
